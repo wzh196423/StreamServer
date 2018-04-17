@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      资源管理
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-group ion-item no-padding *ngFor="let thing of things">
+      <button ion-item outline (click)="showDetail(thing)">
+        <h2>{{thing}}</h2>
+      </button>
+    </ion-item-group>
+  </ion-list>
+</ion-content>

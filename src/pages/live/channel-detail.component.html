@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      分类:{{channel.category}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  频道描述:{{channel.description}}
+
+  <ion-grid>
+
+    <ion-row>
+      <ng-container *ngFor="let liveRoom of liveRoomList ; let i = index">
+        <ion-col col-2 *ngIf="i % 2 == 0"></ion-col>
+        <ion-col col-4>
+          <div style="position:relative;width:90%;left: 5%; height: 80%;top:0%">
+            <img src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4105326139,3484086102&fm=58&w=121&h=121&img.PNG&bpow=484&bpoh=473" style="position:relative;left:0;top:0;width:98%;height:98%">
+          </div>
+          <a style="position: relative;height: 10%;top: 90%;width: 90%;left: 5%">{{liveRoom.teacherName}}:{{liveRoom.title}}</a>
+        </ion-col>
+        <ion-col col-2 *ngIf="i % 2 == 1"></ion-col>
+      </ng-container>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

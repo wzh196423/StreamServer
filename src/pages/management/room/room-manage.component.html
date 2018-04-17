@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      教室管理
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addRoom()">
+        <ion-icon name="add"></ion-icon>添加
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-group ion-item no-padding *ngFor="let campus of campusList">
+      <ion-item-divider no-margin color="light"><b>{{campus.name}}</b></ion-item-divider>
+      <button ion-item outline *ngFor="let room of roomList" [hidden]="room.campusId != campus.id" (click)="showDetail(room)">
+        <h2>教室 : {{room.name}}</h2>
+      </button>
+    </ion-item-group>
+  </ion-list>
+
+</ion-content>

@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      挂载<a *ngIf="type == 1">rootServer</a><a *ngIf="type == 2">liveServer</a>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onSubmit()" #registerFrom="ngForm" novalidate="novalidate">
+    <ion-item>
+      <ion-label floating>port</ion-label>
+      <ion-input type="text" name="port" [(ngModel)]='port' required [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="type == 2">
+      <ion-label floating>maxStream</ion-label>
+      <ion-input type="number" name="maxStream" [(ngModel)]='maxStream' required [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="type == 2">
+      <ion-label>rootServer</ion-label>
+      <ion-select interface="popover" [(ngModel)]="rootServerId" [ngModelOptions]="{standalone: true}" placeholder="--请选择rootServer--">
+        <ion-option *ngFor="let rs of rootServerList" value="{{rs.id}}">
+          {{getRootServerIpById(rs.id)}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+
+    <div padding>
+      <button type="submit" ion-button color="primary" block [disabled]="!registerFrom.form.valid" ngForm="">添加</button>
+    </div>
+
+  </form>
+</ion-content>

@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      直播频道
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addChannel()">
+        <ion-icon name="add"></ion-icon>添加
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-group ion-item no-padding *ngFor="let channel of channelList">
+      <ion-item-divider no-margin color="light">
+        <b>{{channel.category}}频道:{{getShortDescrip(channel)}}</b>
+        <button ion-button outline item-end (click)="addLiveRoom(channel)">
+          <ion-icon name="add"></ion-icon>
+          添加直播间
+        </button>
+      </ion-item-divider>
+      <button ion-item *ngFor="let liveRoom of liveRoomService.getLiveRoomByChannel(channel)" (click)="showLiveRoomDetail(liveRoom)">
+        {{liveRoom.teacherName}}:{{liveRoom.title}}
+      </button>
+
+    </ion-item-group>
+  </ion-list>
+</ion-content>

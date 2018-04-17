@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      摄像头管理
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addCamera()">
+        <ion-icon name="add"></ion-icon>添加
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-group ion-item no-padding *ngFor="let campus of campusList">
+      <ion-item-divider no-margin color="light"><b>{{campus.name}}</b></ion-item-divider>
+      <ng-container *ngFor="let camera of getCameraByCampus(campus)">
+        <button ion-item block (click)="showDetail(camera)">
+          <h2>brand : {{camera.brand}}</h2>
+          <h2>model : {{camera.model}}</h2>
+          <h2>serialNumber : {{camera.serialNumber}}</h2>
+          <h2>ip : {{camera.ip}}</h2>
+          <h2>room : {{getRoomNameByRoomId(camera.roomId)}}</h2>
+          <h2>registerTime: {{camera.registerTime.toLocaleTimeString()}}</h2>
+          <h2>status: {{camera.status?'打开':'关闭'}}</h2>
+        </button>
+      </ng-container>
+    </ion-item-group>
+  </ion-list>
+
+</ion-content>

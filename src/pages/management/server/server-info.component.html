@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      服务器详情
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <h6>ip地址 : {{server.ip}}</h6>
+  <h6>品牌 : {{server.brand}}</h6>
+  <h6>登记时间 : {{server.registerTime}}</h6>
+  <h6>硬盘大小 : {{server.storage}} GB</h6>
+  <h6>已用硬盘空间 : {{server.usedStorage}} GB</h6>
+  <h6>CPU核数 : {{server.cores}} 核</h6>
+  <h6>内存 : {{server.memory}} GB</h6>
+  <h6>描述 : {{server.description}}</h6>
+
+  <ion-list>
+    <ion-item-group ion-item no-padding>
+      <ion-item-divider no-margin color="light">
+        <b>rootServer</b>
+        <button ion-button outline item-end (click)="registerServer(1)">
+          <ion-icon name="add"></ion-icon>
+          挂载rootServer
+        </button>
+      </ion-item-divider>
+      <button ion-item block *ngFor="let rootServer of rootServerList">
+        <h2>port : {{rootServer.port}}</h2>
+      </button>
+
+      <ion-item-divider no-margin color="light">
+        <b>liveServer</b>
+        <button ion-button outline item-end (click)="registerServer(2)">
+          <ion-icon name="add"></ion-icon>
+          挂载liveServer
+        </button>
+      </ion-item-divider>
+      <button ion-item block *ngFor="let liveServer of liveServerList" outline>
+        <h2>port : {{liveServer.port}}</h2>
+        <h2>maxStream : {{liveServer.maxStream}}</h2>
+        <h2>rootServer : {{getRootServerIpById(liveServer.rootServerId)}}</h2>
+      </button>
+
+    </ion-item-group>
+
+
+
+  </ion-list>
+
+
+</ion-content>

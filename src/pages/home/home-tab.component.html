@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      个人信息
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <!--<button ion-item (click)="changeImage()">-->
+      <!--头像-->
+      <!--<ion-avatar item-right>-->
+        <!--<img [src] = localUser.userimage style="width: 80px;height: 80px">-->
+      <!--</ion-avatar>-->
+    <!--</button>-->
+    <button ion-item (click)="changeNickname()">
+      昵称
+      <p item-right>{{localUser.nickname}}</p>
+    </button>
+    <ion-item>
+      账号
+      <p item-right>{{localUser.username}}</p>
+    </ion-item>
+
+    <button ion-button color = "danger" block style = "margin-top: 120px" (click)="cancelAccount()">
+      退出
+    </button>
+  </ion-list>
+
+</ion-content>

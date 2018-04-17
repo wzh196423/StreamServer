@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      添加直播频道
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onSubmit()" #registerFrom="ngForm">
+
+    <ion-item>
+      <ion-label floating>分类</ion-label>
+      <ion-input type="text" name="category" [(ngModel)]='category' required [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>描述</ion-label>
+      <ion-textarea type="text" name="description" [(ngModel)]='description' required [ngModelOptions]="{standalone: true}"></ion-textarea>
+    </ion-item>
+
+
+    <div padding>
+      <button type="submit" ion-button color="primary" block [disabled]="!registerFrom.form.valid">添加频道</button>
+    </div>
+
+
+  </form>
+</ion-content>

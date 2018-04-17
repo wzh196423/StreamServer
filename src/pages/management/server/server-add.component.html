@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      添加服务器
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onSubmit()" #registerFrom="ngForm" novalidate="novalidate">
+    <ion-item>
+      <ion-label floating>ip</ion-label>
+      <ion-input type="text" name="ip" [(ngModel)]='ip' required [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>品牌</ion-label>
+      <ion-input type="text" name="brand" [(ngModel)]='brand' required [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>描述</ion-label>
+      <ion-input type="text" name="description" [(ngModel)]='description' required [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>存储空间(GB)</ion-label>
+      <ion-input type="number" name="storage" [(ngModel)]='storage' [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>已用存储空间(GB)</ion-label>
+      <ion-input type="number" name="usedStorage" [(ngModel)]='usedStorage' [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>核数</ion-label>
+      <ion-input type="number" name="cores" [(ngModel)]='cores' [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>内存(GB)</ion-label>
+      <ion-input type="number" name="memory" [(ngModel)]='memory' [ngModelOptions]="{standalone: true}">GB</ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label>校区</ion-label>
+      <ion-select interface="popover" [(ngModel)]="campusId" [ngModelOptions]="{standalone: true}" (ionChange)="updateRoomByCampus()" placeholder="--请选择校区--">
+        <ion-option *ngFor="let c of campusList" value="{{c.id}}">
+          {{c.name}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>教室</ion-label>
+      <ion-select interface="popover" [(ngModel)]="roomId" [ngModelOptions]="{standalone: true}" placeholder="--请选择教室--">
+        <ion-option *ngFor="let r of roomListByCampus" value="{{r.id}}">
+          {{r.name}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+
+
+    <div padding>
+      <button type="submit" ion-button color="primary" block [disabled]="!registerFrom.form.valid" ngForm="">添加服务器</button>
+    </div>
+
+
+  </form>
+</ion-content>

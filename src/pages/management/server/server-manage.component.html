@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      服务器管理
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addServer()">
+        <ion-icon name="add"></ion-icon>添加
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-group ion-item no-padding *ngFor="let server of serverList">
+      <ion-item-divider no-margin color="light">
+        <b>{{server.ip}}</b>
+        <button ion-button outline item-end (click)="registerServer()">
+          <ion-icon name="add"></ion-icon>
+          挂载服务
+        </button>
+      </ion-item-divider>
+      <button ion-item block (click)="gotoInfo(server)">
+        <h2>brand : {{server.brand}}</h2>
+        <h2>registerTime : {{server.registerTime}}</h2>
+        <h2>storage : {{server.storage}} GB</h2>
+        <h2>usedStorage : {{server.usedStorage}} GB ({{(server.usedStorage/server.storage*100).toFixed(1)}}%)</h2>
+        <h2>cores : {{server.cores}} cores</h2>
+        <h2>memory : {{server.memory}} GB</h2>
+        <h2>room : {{getRoomNameByRoomId(server.roomId)}}</h2>
+        <h2>description : {{server.description}}</h2>
+      </button>
+    </ion-item-group>
+  </ion-list>
+
+</ion-content>
