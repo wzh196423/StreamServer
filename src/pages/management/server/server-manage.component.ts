@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {Server} from "../../../entities/server";
 import {ServerService} from "../../../service/server.service";
-import {App, NavController} from "ionic-angular";
+import {AlertController, App, NavController, ToastController} from "ionic-angular";
 import {ServerAddPage} from "./server-add.component";
 import {Room} from "../../../entities/room";
 import {RoomService} from "../../../service/room.service";
@@ -22,14 +22,17 @@ export class ServerManagePage{
               public roomService:RoomService,
               public campusService:CampusService,
               public navCtrl: NavController,
-              public appCtrl: App){
+              public appCtrl: App,
+              public alertCtrl : AlertController,
+              public toastCtrl: ToastController,){
     this.serverList = this.serverService.getServerList();
     this.roomList = this.roomService.getRoomList();
     this.campusList = this.campusService.getCampusList();
   }
 
   addServer(){
-    this.navCtrl.push(ServerAddPage);
+    //this.navCtrl.push(ServerAddPage);
+    this.appCtrl.getRootNavs()[0].push(ServerAddPage);
   }
 
   getRoomNameByRoomId(id:number){
@@ -86,10 +89,49 @@ export class ServerManagePage{
   registerServer(){}
 
   gotoInfo(server:Server){
-    this.navCtrl.push(ServerInfoPage,{
+    this.appCtrl.getRootNavs()[0].push(ServerInfoPage,{
       server:server,
       roomName:this.getRoomNameByRoomId(server.roomId)
     })
+  }
+
+  deleteServer(server:Server){
+    let alert = this.alertCtrl.create({
+      title: '删除确认',
+      message: '确定要删除ip为"'+server.ip+'"的服务器?',
+      buttons: [
+        {
+          text: '取消',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: '删除',
+          handler: () => {
+            console.log('delete clicked');
+            this.serverService.deleteServer(server).then( (data) => {
+              if (data == 'success'){
+                let toast = this.toastCtrl.create({
+                  message:"删除成功",
+                  duration:2000,
+                  position:'middle',
+                });
+                toast.present();
+              }else {
+                alert = this.alertCtrl.create({
+                  title: '删除失败',
+                  subTitle: data == 'error'?'服务器错误，请重试':'该服务器上运行了rootServer或liveServer，无法删除，请仔细检查',
+                  buttons: ['确定']
+                });
+                alert.present();
+              }
+            })
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

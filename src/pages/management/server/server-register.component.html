@@ -6,7 +6,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content id="liveServer">
   <form (ngSubmit)="onSubmit()" #registerFrom="ngForm" novalidate="novalidate">
     <ion-item>
       <ion-label floating>port</ion-label>
@@ -20,7 +20,7 @@
 
     <ion-item *ngIf="type == 2">
       <ion-label>rootServer</ion-label>
-      <ion-select interface="popover" [(ngModel)]="rootServerId" [ngModelOptions]="{standalone: true}" placeholder="--请选择rootServer--">
+      <ion-select interface="popover" [(ngModel)]="rootServerId" [ngModelOptions]="{standalone: true}" placeholder="--请选择rootServer--" style="max-width: 100%">
         <ion-option *ngFor="let rs of rootServerList" value="{{rs.id}}">
           {{getRootServerIpById(rs.id)}}
         </ion-option>

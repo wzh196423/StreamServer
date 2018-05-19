@@ -26,9 +26,18 @@
     </ion-item>
 
     <ion-item>
+      <ion-label>学校</ion-label>
+      <ion-select interface="popover" [(ngModel)]="schoolId" [ngModelOptions]="{standalone: true}" (ionChange)="updateCampusBySchool()" placeholder="--请选择学校--">
+        <ion-option *ngFor="let s of schoolList" value="{{s.id}}">
+          {{s.name}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
       <ion-label>校区</ion-label>
       <ion-select interface="popover" [(ngModel)]="campusId" [ngModelOptions]="{standalone: true}" (ionChange)="updateRoomByCampus()" placeholder="--请选择校区--">
-        <ion-option *ngFor="let c of campusList" value="{{c.id}}">
+        <ion-option *ngFor="let c of campusListBySchool" value="{{c.id}}">
           {{c.name}}
         </ion-option>
       </ion-select>

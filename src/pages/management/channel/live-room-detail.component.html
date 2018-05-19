@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      直播间详情
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <h6>title : {{liveRoom.title}}</h6>
+  <h6 style="word-break:break-all">description : {{liveRoom.description}}</h6>
+  <h6>channel : {{channel.category}}</h6>
+  <h6>teacherName : {{liveRoom.teacherName}}</h6>
+  <ion-list>
+    <ion-item-divider no-margin color="light"><b>已经绑定的直播流</b></ion-item-divider>
+    <button ion-item block *ngFor="let ds of directStreamService.getDirectStreamsByLiveRoom(liveRoom)" (click)="watch(ds)">
+      {{ds.url}}
+    </button>
+  </ion-list>
+
+
+</ion-content>

@@ -112,11 +112,11 @@ export class ServerAddPage{
       });
       loading.present();
       var toast = null;
-      let temp = new Server(this.ip,this.brand,new Date(),this.description,this.storage,this.usedStorage,this.cores,this.memory,this.roomId,100);
+      let temp = new Server(this.ip,this.brand,new Date(),this.description,this.storage,this.usedStorage,this.cores,this.memory,this.roomId);
       this.serverService.addServer(temp).then((data) =>{
         if (data === 'success'){
           toast = this.toastCtrl.create({
-            message:"服务器注册成功,ip :" +this.ip + ",brand :" + this.brand + ", room :" +this.roomId,
+            message:"服务器注册成功,ip :" +this.ip + ",brand :" + this.brand + ", location :" +this.roomId,
             duration:2000,
             position:'middle',
           });

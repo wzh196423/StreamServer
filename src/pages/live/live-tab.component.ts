@@ -4,15 +4,16 @@ import {ChannelService} from "../../service/channel.service";
 import {LiveRoomService} from "../../service/liveRoom.service";
 import {Channel} from "../../entities/channel";
 import {LiveRoom} from "../../entities/liveRoom";
-import {ChannelDetailPage} from "./channel-detail.component";
+import {LiveRoomDetailPage} from "../management/channel/live-room-detail.component";
 
 @Component({
-  selector: 'page-about',
+  selector: 'page-live-tab',
   templateUrl: 'live-tab.component.html'
 })
 export class LiveTabPage {
   channelList:Channel[];
   liveRoomList:LiveRoom[];
+  showAll:Map<number,boolean> = new Map<number,boolean>();
 
   constructor(public navCtrl: NavController,
               public appCtrl: App,
@@ -20,11 +21,55 @@ export class LiveTabPage {
               public liveRoomService: LiveRoomService) {
     this.channelList = this.channelService.getChannelList();
     this.liveRoomList = this.liveRoomService.getLiveRoomList();
+    this.channelList.forEach(item => {
+      this.showAll.set(item.id,false);
+    })
   }
 
   checkAllLiveRooms(channel:Channel){
-    this.navCtrl.push(ChannelDetailPage,{
-      liveRoomList:this.liveRoomService.getLiveRoomByChannel(channel),
+    this.showAll.set(channel.id,!this.showAll.get(channel.id));
+    // this.appCtrl.getRootNavs()[0].push(ChannelDetailPage,{
+    //   liveRoomList:this.liveRoomService.getLiveRoomByChannel(channel),
+    //   channel:channel
+    // })
+  }
+
+  ionViewDidEnter(){
+    this.channelService.updateChannelList().then( channels =>{
+      this.channelList = channels;
+      this.showAll.clear();
+      this.channelList.forEach(item => {
+        this.showAll.set(item.id,false);
+      })
+    });
+    this.liveRoomService.updateLiveRoomList().then(liveRooms =>{
+      this.liveRoomList = liveRooms;
+    });
+    this.channelService.registerPage(this);
+    this.liveRoomService.registerPage(this);
+  }
+
+  ionViewDidLeave(){
+    this.channelService.removePage(this);
+    this.liveRoomService.removePage(this);
+  }
+
+  update(){
+    this.channelService.updateChannelList().then( channels =>{
+      this.channelList = channels;
+      this.showAll.clear();
+      this.channelList.forEach(item => {
+        this.showAll.set(item.id,false);
+      });
+    });
+    this.liveRoomService.updateLiveRoomList().then(liveRooms =>{
+      this.liveRoomList = liveRooms;
+    });
+  }
+
+  showLiveRoomDetail(channel:Channel,liveRoom:LiveRoom){
+    this.navCtrl.push(LiveRoomDetailPage,{
+      liveRoom:liveRoom,
       channel:channel
     })
   }

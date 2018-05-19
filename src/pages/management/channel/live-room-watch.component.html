@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{liveRoom.teacherName}}的直播间
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <h6>{{liveRoom.teacherName}}:{{liveRoom.title}}</h6>
+
+
+  <!--<video id="live-stream" class="video-js vjs-default-skin vjs-big-play-centered"-->
+         <!--controls autoplay preload="auto" width="1080" height="520"-->
+         <!--data-setup='{}'-->
+         <!--style="width: 90vw;height: 60vw;left: 5vw">-->
+    <!--<source src="http://192.168.199.226:1935/live/myStream/wzh/playlist.m3u8" type="application/x-mpegURL">-->
+  <!--</video>-->
+  <!--<script>-->
+    <!--var options = {-->
+      <!--width: 940,-->
+      <!--height: 360-->
+    <!--}-->
+    <!--var player = videojs('live-stream', options);-->
+
+    <!--player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function(e) {-->
+      <!--console.warn('VIDEOJS player event: ',  e.type);-->
+    <!--});-->
+  <!--</script>-->
+  <script src="https://vjs.zencdn.net/5.19/video.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.min.js"></script>
+  <video
+    id="livestream"
+    class="video-js vjs-default-skin vjs-big-play-centered"
+    controls
+    autoplay
+    preload="auto"
+    data-setup=''
+    style="width: 400px;height: 300px">
+    <source src="http://192.168.199.226:1935/live/myStream/www/playlist.m3u8" type="application/x-mpegURL">
+  </video>
+
+
+  <!--<h6 style="word-break:break-all">description : {{liveRoom.description}}</h6>-->
+
+
+</ion-content>

@@ -44,7 +44,7 @@ export class ChannelAddPage{
       });
       loading.present();
       var toast = null;
-      var temp = new Channel(this.category,this.description,10);
+      var temp = new Channel(this.category,this.description);
       this.channelService.addChannel(temp).then( (data) =>{
         if (data === 'success'){
           toast = this.toastCtrl.create({

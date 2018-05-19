@@ -8,11 +8,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from "@angular/core";
-import { Room } from "../../../entities/room";
+import { Room } from "../../../../entities/room";
 import { AlertController, App, LoadingController, NavController, ToastController } from "ionic-angular";
-import { RoomService } from "../../../service/room.service";
-import { CampusService } from "../../../service/campus.service";
-import { CameraService } from "../../../service/camera.service";
+import { RoomService } from "../../../../service/room.service";
+import { CampusService } from "../../../../service/campus.service";
+import { CameraService } from "../../../../service/camera.service";
 var RoomDetailPage = /** @class */ (function () {
     function RoomDetailPage(appCtrl, navCtrl, roomService, campusService, cameraService, loadingCtrl, alertCtrl, toastCtrl) {
         this.appCtrl = appCtrl;
@@ -121,7 +121,7 @@ var RoomDetailPage = /** @class */ (function () {
     RoomDetailPage = RoomDetailPage_1 = __decorate([
         Component({
             selector: 'page-room-detail',
-            templateUrl: 'room-manage.component.html',
+            templateUrl: 'room/room-manage.component.html',
         }),
         __metadata("design:paramtypes", [App,
             NavController,
@@ -136,4 +136,4 @@ var RoomDetailPage = /** @class */ (function () {
     var RoomDetailPage_1;
 }());
 export { RoomDetailPage };
-//# sourceMappingURL=room-manage.component.js.map
+//# sourceMappingURL=location-manage.component.js.map

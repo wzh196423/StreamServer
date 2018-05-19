@@ -8,6 +8,7 @@ import {DirectStream} from "../entities/directStream";
 import {LiveRoom} from "../entities/liveRoom";
 import {LiveServer} from "../entities/liveServer";
 import {Camera} from "../entities/camera";
+import {Channel} from "../entities/channel";
 
 @Injectable()
 export class DirectStreamService{
@@ -34,17 +35,15 @@ export class DirectStreamService{
     let url = 'http://localhost:3000/directStream/getDirectStreams';
     return this.http.get(url).toPromise().then(res => {
       if (res.json().data === 'success') {
-        this.directStreamList = JSON.parse(res.json().friends);
+        this.directStreamList = JSON.parse(res.json().directStreams);
         return this.directStreamList;
       } else {
         console.log('DirectStreamService-updateDirectStreamList:', res.json().data);
         return [];
       }
     }).catch(error => {
-      return this.directStreamList;
-      // TODO:
-      // console.log(error);
-      // return [];
+      console.log(error);
+      return [];
     });
   }
 
@@ -70,6 +69,7 @@ export class DirectStreamService{
       .toPromise()
       .then((res) => {
         if (res.json().data === 'success') {
+          directStream.id = res.json().id;
           this.directStreamList.push(directStream);
           this.update();
           return Promise.resolve('success');
@@ -78,8 +78,53 @@ export class DirectStreamService{
         }
       }).catch((error) => {
         console.log('DirectStreamService-addDirectStream', error);
+        return Promise.resolve('error');
       });
 
+  }
+  deleteDirectStream(directStream:DirectStream){
+    let url = 'http://localhost:3000/directStream/deleteDirectStream?id='+directStream.id;
+    return this.http.delete(url)
+      .toPromise()
+      .then((res) => {
+        if (res.json().data === 'success') {
+          this.directStreamList.splice(this.directStreamList.indexOf(directStream),1);
+          console.log(directStream);
+          this.update();
+          return Promise.resolve('success');
+        } else if (res.json().data == 'ForeignKeyConstraintError'){
+          return Promise.resolve('constraintError');
+        } else {
+          return Promise.resolve('error');
+        }
+      }).catch((error) => {
+        console.log('DirectStreamService-deleteDirectStream', error);
+        return Promise.resolve('error');
+      });
+  }
+  bindLiveRoom(directStream:DirectStream,liveRoomId:number){
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    let url = 'http://localhost:3000/directStream/bindLiveRoom';
+    let c = {
+      directStreamId: directStream.id,
+      liveRoomId: liveRoomId,
+    };
+    return this.http.put(url,JSON.stringify(c),options)
+      .toPromise()
+      .then(res => {
+        if (res.json().data === 'success') {
+          directStream.liveRoomId = liveRoomId;
+          console.log(directStream);
+          this.update();
+          return Promise.resolve('success');
+        } else {
+          return Promise.resolve('error');
+        }
+      }).catch(error => {
+        console.log('DirectStreamService-bindLiveRoom', error);
+        return Promise.resolve('error');
+      })
   }
   registerPage(page: any) {
     this.observers.push(page);
@@ -91,8 +136,8 @@ export class DirectStreamService{
     //component.log('remove!');
   }
 
-  getDirectStreamByLiveRoom(liveRoom:LiveRoom){
-    return this.directStreamList.find(item => {
+  getDirectStreamsByLiveRoom(liveRoom:LiveRoom){
+    return this.directStreamList.filter(item => {
       return item.liveRoomId == liveRoom.id;
     })
   }

@@ -7,22 +7,34 @@
 </ion-header>
 
 <ion-content>
-  频道描述:{{channel.description}}
+  <!--频道描述:{{channel.description}}-->
+  <!--<br/>-->
+  <!--<ion-grid>-->
 
-  <ion-grid>
+    <!--<ion-row>-->
+      <!--<ng-container *ngFor="let liveRoom of liveRoomList ; let i = index">-->
+        <!--<ion-col col-2 *ngIf="i % 2 == 0"></ion-col>-->
+        <!--<ion-col col-4>-->
+          <!--<div style="position:relative;width:90%;left: 5%; height: 80%;top:0%">-->
+            <!--<img src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4105326139,3484086102&fm=58&w=121&h=121&img.PNG&bpow=484&bpoh=473" style="position:relative;left:0;top:0;width:98%;height:98%">-->
+          <!--</div>-->
+          <!--<a style="position: relative;height: 10%;top: 90%;width: 90%;left: 5%">{{liveRoom.teacherName}}:{{liveRoom.title}}</a>-->
+        <!--</ion-col>-->
+        <!--<ion-col col-2 *ngIf="i % 2 == 1"></ion-col>-->
+      <!--</ng-container>-->
+    <!--</ion-row>-->
 
-    <ion-row>
-      <ng-container *ngFor="let liveRoom of liveRoomList ; let i = index">
-        <ion-col col-2 *ngIf="i % 2 == 0"></ion-col>
-        <ion-col col-4>
-          <div style="position:relative;width:90%;left: 5%; height: 80%;top:0%">
-            <img src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4105326139,3484086102&fm=58&w=121&h=121&img.PNG&bpow=484&bpoh=473" style="position:relative;left:0;top:0;width:98%;height:98%">
-          </div>
-          <a style="position: relative;height: 10%;top: 90%;width: 90%;left: 5%">{{liveRoom.teacherName}}:{{liveRoom.title}}</a>
-        </ion-col>
-        <ion-col col-2 *ngIf="i % 2 == 1"></ion-col>
-      </ng-container>
-    </ion-row>
+  <!--</ion-grid>-->
 
-  </ion-grid>
+  <ion-list>
+    <ion-item-divider no-margin color="light">
+      <b>频道描述:{{channel.description}}</b>
+    </ion-item-divider>
+    <button ion-item *ngFor="let liveRoom of liveRoomList" (click)="showDetail()">
+      <ion-avatar item-left style="width: 20vw;height: 20vw">
+        <img src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4105326139,3484086102&fm=58&w=121&h=121&img.PNG&bpow=484&bpoh=473" style="position: relative;width: 100%;height: 100%">
+      </ion-avatar>
+      <h3>{{liveRoom.teacherName}}:{{liveRoom.title}}</h3>
+    </button>
+  </ion-list>
 </ion-content>

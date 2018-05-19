@@ -4,6 +4,9 @@
       直播频道
     </ion-title>
     <ion-buttons end>
+      <button ion-button icon-only (click)="showDelete()">
+        <ion-icon name="remove"></ion-icon>删除
+      </button>
       <button ion-button icon-only (click)="addChannel()">
         <ion-icon name="add"></ion-icon>添加
       </button>
@@ -13,17 +16,26 @@
 
 <ion-content>
   <ion-list>
+
     <ion-item-group ion-item no-padding *ngFor="let channel of channelList">
       <ion-item-divider no-margin color="light">
-        <b>{{channel.category}}频道:{{getShortDescrip(channel)}}</b>
+        <button ion-button icon-only color="light" item-start (click)="deleteChannel(channel)" [hidden]="hidden">
+          <ion-icon name="remove-circle" color="danger"></ion-icon>
+        </button>
+        <b>{{channel.category}}频道:{{channel.description}}</b>
         <button ion-button outline item-end (click)="addLiveRoom(channel)">
           <ion-icon name="add"></ion-icon>
           添加直播间
         </button>
       </ion-item-divider>
-      <button ion-item *ngFor="let liveRoom of liveRoomService.getLiveRoomByChannel(channel)" (click)="showLiveRoomDetail(liveRoom)">
+      <ion-item-sliding *ngFor="let liveRoom of liveRoomService.getLiveRoomByChannel(channel)">
+      <button ion-item (click)="showLiveRoomDetail(channel,liveRoom)">
         {{liveRoom.teacherName}}:{{liveRoom.title}}
       </button>
+        <ion-item-options>
+          <button ion-button color="danger"  (click)="deleteLiveRoom(liveRoom)"><ion-icon name="trash"></ion-icon> Delete</button>
+        </ion-item-options>
+      </ion-item-sliding>
 
     </ion-item-group>
   </ion-list>

@@ -12,20 +12,29 @@
 </ion-header>
 
 <ion-content>
+
   <ion-list>
-    <ion-item-group ion-item no-padding *ngFor="let campus of campusList">
-      <ion-item-divider no-margin color="light"><b>{{campus.name}}</b></ion-item-divider>
-      <ng-container *ngFor="let camera of getCameraByCampus(campus)">
-        <button ion-item block (click)="showDetail(camera)">
-          <h2>brand : {{camera.brand}}</h2>
-          <h2>model : {{camera.model}}</h2>
-          <h2>serialNumber : {{camera.serialNumber}}</h2>
-          <h2>ip : {{camera.ip}}</h2>
-          <h2>room : {{getRoomNameByRoomId(camera.roomId)}}</h2>
-          <h2>registerTime: {{camera.registerTime.toLocaleTimeString()}}</h2>
-          <h2>status: {{camera.status?'打开':'关闭'}}</h2>
-        </button>
-      </ng-container>
+    <ion-item-group ion-item no-padding *ngFor="let school of schoolList">
+      <ion-item-divider no-margin color="light"><b>{{school.name}}</b></ion-item-divider>
+      <ion-item-group ion-item no-padding *ngFor="let campus of campusList" [hidden]="campus.schoolId != school.id">
+        <ion-list-header no-margin color="light"><b>{{campus.name}}</b></ion-list-header>
+        <ion-item-sliding *ngFor="let camera of getCameraByCampus(campus)">
+          <button ion-item block (click)="showDetail(camera,campus,school)" text-wrap>
+            <h2>brand : {{camera.brand}}</h2>
+            <h2>model : {{camera.model}}</h2>
+            <h2>serialNumber : {{camera.serialNumber}}</h2>
+            <h2>ip : {{camera.ip}}</h2>
+            <h2>room : {{getRoomNameByRoomId(camera.roomId)}}</h2>
+            <h2>registerTime: {{camera.registerTime}}</h2>
+            <h2 style="word-break:break-all;">streamUrl : {{showStreamUrl(camera)}}</h2>
+            <h2>status: {{camera.status?'打开':'关闭'}}</h2>
+          </button>
+          <ion-item-options>
+            <button ion-button color="danger"  (click)="deleteCamera(camera)"><ion-icon name="trash"></ion-icon> Delete</button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-item-group>
+
     </ion-item-group>
   </ion-list>
 

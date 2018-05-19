@@ -6,6 +6,7 @@ import {Headers, Http, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {RootServer} from "../entities/rootServer";
 import {Server} from "../entities/server";
+import {Room} from "../entities/room";
 
 @Injectable()
 export class RootServerService{
@@ -15,7 +16,7 @@ export class RootServerService{
   constructor(public http: Http) {
     this.rootServerList = [];
     this.observers = [];
-    this.rootServerList.push(new RootServer('1433',1,1));
+    // this.rootServerList.push(new RootServer('1433',1,1));
   }
 
   updateAfterLogin() {
@@ -39,10 +40,8 @@ export class RootServerService{
         return [];
       }
     }).catch(error => {
-      return this.rootServerList;
-      // TODO:
-      // console.log(error);
-      // return [];
+      console.log(error);
+      return [];
     });
   }
 
@@ -55,32 +54,49 @@ export class RootServerService{
   }
 
   addRootServer(rootServer : RootServer) {
-    // let headers = new Headers({'Content-Type': 'application/json'});
-    // let options = new RequestOptions({headers: headers});
-    // let url = 'http://localhost:3000/rootServer/addRootServer';
-    // let c = {
-    //   port:rootServer.port,
-    //   serverId:rootServer.serverId
-    // };
-    //
-    // return this.http.post(url, JSON.stringify(c), options)
-    //   .toPromise()
-    //   .then((res) => {
-    //     if (res.json().data === 'success') {
-    //       this.rootServerList.push(rootServer);
-    //       this.update();
-    //       return Promise.resolve('success');
-    //     } else {
-    //       return Promise.resolve('error');
-    //     }
-    //   }).catch((error) => {
-    //     console.log('RootServerService-addRootServer', error);
-    //   });
-    this.rootServerList.push(rootServer);
-    this.update();
-    console.log(this.rootServerList.length);
-    return Promise.resolve('success');
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    let url = 'http://localhost:3000/rootServer/addRootServer';
+    let c = {
+      port:rootServer.port,
+      serverId:rootServer.serverId
+    };
 
+    return this.http.post(url, JSON.stringify(c), options)
+      .toPromise()
+      .then((res) => {
+        if (res.json().data === 'success') {
+          rootServer.id = res.json().id;
+          this.rootServerList.push(rootServer);
+          this.update();
+          return Promise.resolve('success');
+        } else {
+          return Promise.resolve('error');
+        }
+      }).catch((error) => {
+        console.log('RootServerService-addRootServer', error);
+        return Promise.resolve('error');
+      });
+  }
+  deleteRootServer(rootServer : RootServer) {
+    let url = 'http://localhost:3000/rootServer/deleteRootServer?id='+rootServer.id;
+    return this.http.delete(url)
+      .toPromise()
+      .then((res) => {
+        if (res.json().data === 'success') {
+          this.rootServerList.splice(this.rootServerList.indexOf(rootServer),1);
+          console.log(rootServer);
+          this.update();
+          return Promise.resolve('success');
+        } else if (res.json().data == 'ForeignKeyConstraintError'){
+          return Promise.resolve('constraintError');
+        } else {
+          return Promise.resolve('error');
+        }
+      }).catch((error) => {
+        console.log('RootServerService-deleteRootServer', error);
+        return Promise.resolve('error');
+      });
   }
   registerPage(page: any) {
     this.observers.push(page);

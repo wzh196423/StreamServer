@@ -6,6 +6,10 @@ import {RoomService} from "../../../service/room.service";
 import {CampusService} from "../../../service/campus.service";
 import {Camera} from "../../../entities/camera";
 import {CameraService} from "../../../service/camera.service";
+import {School} from "../../../entities/school";
+import {SchoolService} from "../../../service/school.service";
+import {DirectStream} from "../../../entities/directStream";
+import {DirectStreamService} from "../../../service/directStream.service";
 /**
  * Created by wangziheng on 2018/3/24.
  */
@@ -15,76 +19,50 @@ import {CameraService} from "../../../service/camera.service";
 })
 
 export class CameraAddPage{
+  schoolList: School[];
   campusList : Campus[];
   roomList : Room[];
+  directStreamList: DirectStream[];
   brand:string;
   model:string;
   serialNumber : string;
   ip : string;
   campusId : number;
   roomId : number;
+  schoolId: number = undefined;
+  campusListBySchool:Campus[];
   roomListByCampus: Room[];
   constructor(public appCtrl : App ,
               public navCtrl : NavController,
+              public schoolService: SchoolService,
               public roomService : RoomService,
               public campusService : CampusService,
               public loadingCtrl : LoadingController,
               public alertCtrl : AlertController,
               public toastCtrl: ToastController,
               public cameraService: CameraService){
+    this.schoolList = schoolService.getSchoolList();
+    this.campusList = campusService.getCampusList();
+    this.campusListBySchool = this.campusList;
     this.roomList = roomService.getRoomList();
     this.roomListByCampus = this.roomList;
-    this.campusList = campusService.getCampusList();
     this.brand = '';
     this.model = '';
     this.serialNumber = '';
     this.ip = '';
   }
 
-  getRoomNameByRoomId(id:number){
-    for(let room of this.roomList){
-      if(room.id == id)
-        return room.name;
-    }
-    return '';
+  updateCampusBySchool(){
+    this.campusListBySchool = this.campusList.filter(item => {
+      return item.schoolId == this.schoolId;
+    })
   }
 
-  getRoomsByCampusId(campusId : number){
-    let result:Room[] = [];
-    for(let r of this.roomList){
-      if (r.campusId == campusId){
-        result.push(r);
-      }
-    }
-    return result;
-
-  }
   updateRoomByCampus(){
-    this.roomListByCampus = this.getRoomsByCampusId(this.campusId);
+    this.roomListByCampus = this.roomList.filter(item => {
+      return item.campusId == this.campusId;
+    })
   }
-
-  // ionViewDidEnter(){
-  //   this.roomService.updateRoomList().then( rooms =>{
-  //     this.roomList = rooms;
-  //     this.roomListByCampus = this.roomList;
-  //   })
-  //   this.campusService.updateCampusList().then( campuses => {
-  //     this.campusList = campuses;
-  //   })
-  //   this.roomService.registerPage(this);
-  //   this.campusService.registerPage(this);
-  // }
-  //
-  // ionViewDidLeave(){
-  //   this.roomService.removePage(this);
-  //   this.campusService.removePage(this);
-  // }
-  //
-  // update(){
-  //   this.cameraService.updateCameraList().then(cameras =>{
-  //     this.cameraList = cameras;
-  //   })
-  // }
 
   onSubmit(){
     if (this.serialNumber === ''){
@@ -129,11 +107,11 @@ export class CameraAddPage{
       });
       loading.present();
       var toast = null;
-      let temp = new Camera(this.brand,this.model,this.serialNumber,this.ip,new Date(),false,this.roomId,undefined,999);
+      let temp = new Camera(this.brand,this.model,this.serialNumber,this.ip,new Date(),false,this.roomId,undefined);
       this.cameraService.addCamera(temp).then((data) =>{
         if (data === 'success'){
           toast = this.toastCtrl.create({
-            message:"摄像头注册成功,serialNum :" +this.serialNumber + ",ip :" + this.ip + ", campus :" + this.campusId + ", room :" +this.roomId,
+            message:"摄像头注册成功,serialNum :" +this.serialNumber + ",ip :" + this.ip + ", campus :" + this.campusId + ", location :" +this.roomId,
             duration:2000,
             position:'middle',
           });

@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      校区管理
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addCampus()">
+        <ion-icon name="add"></ion-icon>添加
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-group ion-item no-padding *ngFor="let school of schoolList">
+      <ion-item-divider no-margin color="light"><b>{{school.name}}</b></ion-item-divider>
+      <ion-item-sliding *ngFor="let campus of campusList" [hidden]="campus.schoolId != school.id">
+        <button ion-item outline (click)="showDetail(campus)">
+          <h2>{{campus.name}}</h2>
+        </button>
+        <ion-item-options>
+          <button ion-button color="danger"  (click)="deleteCampus(campus)"><ion-icon name="trash"></ion-icon> Delete</button>
+        </ion-item-options>
+      </ion-item-sliding>
+
+    </ion-item-group>
+  </ion-list>
+
+</ion-content>

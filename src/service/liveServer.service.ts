@@ -6,6 +6,7 @@ import {Headers, Http, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {LiveServer} from "../entities/liveServer";
 import {Server} from "../entities/server";
+import {LiveRoom} from "../entities/liveRoom";
 
 @Injectable()
 export class LiveServerService{
@@ -15,7 +16,7 @@ export class LiveServerService{
   constructor(public http: Http) {
     this.liveServerList = [];
     this.observers = [];
-    this.liveServerList.push(new LiveServer('1527',6,1,1,1));
+    // this.liveServerList.push(new LiveServer('1527',6,1,1,1));
   }
 
   updateAfterLogin() {
@@ -30,7 +31,7 @@ export class LiveServerService{
 
   // 重新从服务器获取服务器列表
   updateLiveServerList() {
-    let url = 'http://localhost:3000/server/getServers';
+    let url = 'http://localhost:3000/liveServer/getLiveServers';
     return this.http.get(url).toPromise().then(res => {
       if (res.json().data === 'success') {
         this.liveServerList = JSON.parse(res.json().liveServers);
@@ -40,10 +41,8 @@ export class LiveServerService{
         return [];
       }
     }).catch(error => {
-      return this.liveServerList;
-      // TODO:
-      // console.log(error);
-      // return [];
+      console.log(error);
+      return [];
     });
   }
 
@@ -56,34 +55,52 @@ export class LiveServerService{
   }
 
   addLiveServer(liveServer : LiveServer) {
-    // let headers = new Headers({'Content-Type': 'application/json'});
-    // let options = new RequestOptions({headers: headers});
-    // let url = 'http://localhost:3000/server/addServer';
-    // let c = {
-    //   port:liveServer.port,
-    //   serverId:liveServer.serverId,
-    //   maxStream:liveServer.maxStream,
-    //   rootServerId:liveServer.rootServerId
-    // };
-    //
-    // return this.http.post(url, JSON.stringify(c), options)
-    //   .toPromise()
-    //   .then((res) => {
-    //     if (res.json().data === 'success') {
-    //       this.liveServerList.push(liveServer);
-    //       this.update();
-    //       return Promise.resolve('success');
-    //     } else {
-    //       return Promise.resolve('error');
-    //     }
-    //   }).catch((error) => {
-    //     console.log('LiveServerService-addServer', error);
-    //   });
-    this.liveServerList.push(liveServer);
-    this.update();
-    console.log(this.liveServerList.length);
-    return Promise.resolve('success');
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    let url = 'http://localhost:3000/liveServer/addLiveServer';
+    let c = {
+      port:liveServer.port,
+      serverId:liveServer.serverId,
+      maxStream:liveServer.maxStream,
+      rootServerId:liveServer.rootServerId
+    };
 
+    return this.http.post(url, JSON.stringify(c), options)
+      .toPromise()
+      .then((res) => {
+        if (res.json().data === 'success') {
+          liveServer.id = res.json().id;
+          this.liveServerList.push(liveServer);
+          this.update();
+          return Promise.resolve('success');
+        } else {
+          return Promise.resolve('error');
+        }
+      }).catch((error) => {
+        console.log('LiveServerService-addServer', error);
+        return Promise.resolve('error');
+      });
+
+  }
+  deleteLiveServer(liveServer : LiveServer){
+    let url = 'http://localhost:3000/liveServer/deleteLiveServer?id='+liveServer.id;
+    return this.http.delete(url)
+      .toPromise()
+      .then((res) => {
+        if (res.json().data === 'success') {
+          this.liveServerList.splice(this.liveServerList.indexOf(liveServer),1);
+          console.log(liveServer);
+          this.update();
+          return Promise.resolve('success');
+        } else if (res.json().data == 'ForeignKeyConstraintError'){
+          return Promise.resolve('constraintError');
+        } else {
+          return Promise.resolve('error');
+        }
+      }).catch((error) => {
+        console.log('LiveServerService-deleteLiveServer', error);
+        return Promise.resolve('error');
+      });
   }
   registerPage(page: any) {
     this.observers.push(page);

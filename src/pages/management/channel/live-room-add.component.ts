@@ -5,8 +5,8 @@ import {LiveRoom} from "../../../entities/liveRoom";
 import {LiveRoomService} from "../../../service/liveRoom.service";
 
 @Component({
-  selector: 'page-liveRoom-add',
-  templateUrl: 'liveRoom-add.component.html'
+  selector: 'page-live-room-add',
+  templateUrl: 'live-room-add.component.html'
 })
 
 export class LiveRoomAddPage{
@@ -57,7 +57,7 @@ export class LiveRoomAddPage{
       });
       loading.present();
       var toast = null;
-      var temp = new LiveRoom(this.title,this.description,this.channel.id,0,this.teacherName,10);
+      var temp = new LiveRoom(this.title,this.description,this.channel.id,0,this.teacherName);
       this.liveRoomService.addLiveRoom(temp).then( (data) =>{
         if (data === 'success'){
           toast = this.toastCtrl.create({

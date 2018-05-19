@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      直播流详情
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <h6>直播服务器Ip : {{liveServerIp}}</h6>
+  <h6>url : {{directStream.url}}</h6>
+  <h6>status: {{directStream.status?'打开':'关闭'}}</h6>
+  <h6>liveRoom : {{liveRoomTitle}}</h6>
+
+  <form (ngSubmit)="onSubmit()" #registerFrom="ngForm" novalidate="novalidate">
+
+    <!--<ion-item>-->
+      <!--<ion-label>new status: {{newStatus?'打开':'关闭'}}</ion-label>-->
+      <!--<ion-toggle [(ngModel)]="newStatus" [ngModelOptions]="{standalone: true}"></ion-toggle>-->
+    <!--</ion-item>-->
+
+    <ion-item>
+      <ion-select [(ngModel)]="bindLiveRoomId" [ngModelOptions]="{standalone: true}"
+                  placeholder="--请绑定直播间--">
+        <ion-option *ngFor="let lr of liveRoomList" value="{{lr.id}}" [selected]="lr.id == directStream.liveRoomId">
+          {{lr.title}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+
+    <div padding>
+      <button type="submit" ion-button color="primary" block [disabled]="(bindLiveRoomId==undefined || bindLiveRoomId == directStream.liveRoomId)" ngForm="">保存</button>
+    </div>
+  </form>
+
+
+</ion-content>

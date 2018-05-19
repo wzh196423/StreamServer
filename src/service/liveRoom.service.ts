@@ -6,6 +6,7 @@ import {Headers, Http, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {LiveRoom} from "../entities/liveRoom";
 import {Channel} from "../entities/channel";
+import {DirectStream} from "../entities/directStream";
 
 @Injectable()
 export class LiveRoomService{
@@ -14,14 +15,14 @@ export class LiveRoomService{
 
   constructor(public http: Http) {
     this.liveRoomList = [];
-    this.liveRoomList.push(new LiveRoom('化学与人类','有意思的化学与人类课程',1,0,'wzx',1));
-    this.liveRoomList.push(new LiveRoom('改变生活的化学元素','化学如何改变生活',1,0,'www',2));
-    this.liveRoomList.push(new LiveRoom('普化实验','动动手一起来',1,0,'2222',3));
-    this.liveRoomList.push(new LiveRoom('无机化学','无机化学课程，相对于有机',1,0,'hhhhh',4));
-
-
-    this.liveRoomList.push(new LiveRoom('物理实验','动手了解物理世界',2,0,'wuli',5));
-    this.liveRoomList.push(new LiveRoom('大学物理','基础的物理课程，人人都要学',2,0,'woai',6));
+    // this.liveRoomList.push(new LiveRoom('化学与人类','有意思的化学与人类课程',1,0,'wzx',1));
+    // this.liveRoomList.push(new LiveRoom('改变生活的化学元素','化学如何改变生活',1,0,'www',2));
+    // this.liveRoomList.push(new LiveRoom('普化实验','动动手一起来',1,0,'2222',3));
+    // this.liveRoomList.push(new LiveRoom('无机化学','无机化学课程，相对于有机',1,0,'hhhhh',4));
+    //
+    //
+    // this.liveRoomList.push(new LiveRoom('物理实验','动手了解物理世界',2,0,'wuli',5));
+    // this.liveRoomList.push(new LiveRoom('大学物理','基础的物理课程，人人都要学',2,0,'woai',6));
 
     this.observers = [];
   }
@@ -48,10 +49,8 @@ export class LiveRoomService{
         return [];
       }
     }).catch(error => {
-      return this.liveRoomList;
-      // TODO:
-      // console.log(error);
-      // return [];
+      console.log(error);
+      return [];
     });
   }
 
@@ -64,36 +63,53 @@ export class LiveRoomService{
   }
 
   addLiveRoom(liveRoom : LiveRoom) {
-    // let headers = new Headers({'Content-Type': 'application/json'});
-    // let options = new RequestOptions({headers: headers});
-    // let url = 'http://localhost:3000/liveRoom/addLiveRoom';
-    // let c = {
-    //   title : liveRoom.title,
-    //   description : liveRoom.description,
-    //   channelId : liveRoom.channelId,
-    //   watchingNumber : liveRoom.watchingNumber,
-    //   teacherName: liveRoom.teacherName,
-    //   id: liveRoom.id
-    // };
-    //
-    // return this.http.post(url, JSON.stringify(c), options)
-    //   .toPromise()
-    //   .then((res) => {
-    //     if (res.json().data === 'success') {
-    //       this.liveRoomList.push(liveRoom);
-    //       this.update();
-    //       return Promise.resolve('success');
-    //     } else {
-    //       return Promise.resolve('error');
-    //     }
-    //   }).catch((error) => {
-    //     console.log('LiveRoomService-addLiveRoom', error);
-    //   });
-    this.liveRoomList.push(liveRoom);
-    this.update();
-    console.log(this.liveRoomList.length);
-    return Promise.resolve('success');
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    let url = 'http://localhost:3000/liveRoom/addLiveRoom';
+    let c = {
+      title : liveRoom.title,
+      description : liveRoom.description,
+      channelId : liveRoom.channelId,
+      watchingNumber : liveRoom.watchingNumber,
+      teacherName: liveRoom.teacherName,
+    };
 
+    return this.http.post(url, JSON.stringify(c), options)
+      .toPromise()
+      .then((res) => {
+        if (res.json().data === 'success') {
+          liveRoom.id = res.json().id;
+          this.liveRoomList.push(liveRoom);
+          this.update();
+          return Promise.resolve('success');
+        } else {
+          return Promise.resolve('error');
+        }
+      }).catch((error) => {
+        console.log('LiveRoomService-addLiveRoom', error);
+        return Promise.resolve('error');
+      });
+
+  }
+  deleteLiveRoom(liveRoom : LiveRoom){
+    let url = 'http://localhost:3000/liveRoom/deleteLiveRoom?id='+liveRoom.id;
+    return this.http.delete(url)
+      .toPromise()
+      .then((res) => {
+        if (res.json().data === 'success') {
+          this.liveRoomList.splice(this.liveRoomList.indexOf(liveRoom),1);
+          console.log(liveRoom);
+          this.update();
+          return Promise.resolve('success');
+        } else if (res.json().data == 'ForeignKeyConstraintError'){
+          return Promise.resolve('constraintError');
+        } else {
+          return Promise.resolve('error');
+        }
+      }).catch((error) => {
+        console.log('LiveRoomService-deleteLiveRoom', error);
+        return Promise.resolve('error');
+      });
   }
   registerPage(page: any) {
     this.observers.push(page);
@@ -108,6 +124,12 @@ export class LiveRoomService{
   getLiveRoomByChannel(channel:Channel){
     return this.liveRoomList.filter(item => {
       return item.channelId == channel.id;
+    })
+  }
+
+  getLiveRoomById(id:number){
+    return this.liveRoomList.find(item => {
+      return item.id == id;
     })
   }
 }

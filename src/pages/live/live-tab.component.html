@@ -1,57 +1,116 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      直播
+      直播预览
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+
   <ion-list>
-    <ion-item *ngFor="let channel of channelList">
+    <ion-item-group *ngFor="let channel of channelList">
       <ion-item-divider no-margin color="light">
         <b>{{channel.category}}</b>
-        <button ion-button outline item-end (click)="checkAllLiveRooms(channel)">
-          <ion-icon name="search"></ion-icon>
-          查看全部
+        <button ion-button outline item-end (click)="checkAllLiveRooms(channel)" [hidden]="showAll.get(channel.id)">
+          <ion-icon name="arrow-down"></ion-icon>
+          显示全部
+        </button>
+        <button ion-button outline item-end (click)="checkAllLiveRooms(channel)" [hidden]="!showAll.get(channel.id)">
+          <ion-icon name="arrow-up"></ion-icon>
+          收起
         </button>
       </ion-item-divider>
-      <ion-row  *ngIf="liveRoomService.getLiveRoomByChannel(channel).length == 1">
-        <ion-col col-6>
-          <div style="position:relative;width:90%; height:90%;left: 5%;top: 0%">
-            <img src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4105326139,3484086102&fm=58&w=121&h=121&img.PNG&bpow=484&bpoh=473" style="position:relative;left:0%;top:0;width:98%;height:98%">
-          </div>
-          <a style="position: relative;width: 90%;height: 10%;top: 90%;left: 5%">{{liveRoomService.getLiveRoomByChannel(channel)[0].teacherName}}:{{liveRoomService.getLiveRoomByChannel(channel)[0].title}}</a>
-        </ion-col>
-        <ion-col col-6></ion-col>
-      </ion-row>
 
-      <ion-grid *ngIf="liveRoomService.getLiveRoomByChannel(channel).length > 1">
-        <ion-row>
-          <ion-col col-6>
-            <div style="position:relative;width:90%;left: 5%; height: 80%;top:0%">
-              <img src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4105326139,3484086102&fm=58&w=121&h=121&img.PNG&bpow=484&bpoh=473" style="position:relative;left:0;top:0;width:98%;height:98%">
-            </div>
-            <a style="position: relative;height: 10%;top: 90%;width: 90%;left: 5%">{{liveRoomService.getLiveRoomByChannel(channel)[0].teacherName}}:{{liveRoomService.getLiveRoomByChannel(channel)[0].title}}</a>
-          </ion-col>
-          <ion-col col-6>
-            <div style="position:relative;width:90%;left: 5%; height: 80%;top:0%">
-              <img src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4105326139,3484086102&fm=58&w=121&h=121&img.PNG&bpow=484&bpoh=473" style="position:relative;left:0;top:0;width:98%;height:98%">
-            </div>
-            <a style="position: relative;height: 10%;top: 90%;width: 90%;left: 5%">{{liveRoomService.getLiveRoomByChannel(channel)[1].teacherName}}:{{liveRoomService.getLiveRoomByChannel(channel)[1].title}}</a>
-
-          </ion-col>
-          <!--<ion-col col-4>-->
-            <!--<div style="width:100%; padding-bottom:100%">-->
-              <!--<img *ngIf="moment.images.length>=3" src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4105326139,3484086102&fm=58&w=121&h=121&img.PNG&bpow=484&bpoh=473" (click)="viewImage(2)" style="position:absolute;left:0;top:0;width:98%;height:98%">-->
-            <!--</div>-->
-          <!--</ion-col>-->
-        </ion-row>
-
-      </ion-grid>
+      <button ion-item *ngFor="let liveRoom of liveRoomService.getLiveRoomByChannel(channel);let i = index" [hidden]="!showAll.get(channel.id) && i > 1" (click)="showLiveRoomDetail(channel,liveRoom)">
+        <ion-avatar item-left style="width: 20vw;height: 20vw">
+          <img src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=4105326139,3484086102&fm=58&w=121&h=121&img.PNG&bpow=484&bpoh=473" style="position: relative;width: 100%;height: 100%">
+        </ion-avatar>
+        <h3 style="position: relative">{{liveRoom.teacherName}}:{{liveRoom.title}}</h3>
+      </button>
 
 
 
-    </ion-item>
+    </ion-item-group>
   </ion-list>
+
+  <video
+    id="livestream"
+    class="video-js vjs-default-skin vjs-big-play-centered"
+    controls
+    data-setup=''
+    style="width: 400px;height: 300px">
+    <source src="http://192.168.199.226:1935/live/myStream/wzh/playlist.m3u8" type="application/x-mpegURL">
+  </video>
+
+
+
+  <!--以下代码在浏览器中使用移动端模式就不能加载了-->
+  <!--<video-->
+    <!--id="livestream"-->
+    <!--class="video-js vjs-default-skin vjs-big-play-centered"-->
+    <!--controls-->
+    <!--autoplay-->
+    <!--preload="auto"-->
+    <!--data-setup=''-->
+    <!--style="width: 400px;height: 300px">-->
+    <!--<source src="rtmp://192.168.199.226:1935/live/myStream/wzh" type="rtmp/flv">-->
+  <!--</video>-->
+
+  <!--以下代码在浏览器中使用移动端模式也能加载，但是在手机模拟器上不能加载-->
+  <!--<video id="live-stream" class="video-js vjs-default-skin vjs-big-play-centered"-->
+         <!--controls preload="auto" width="1080" height="520"-->
+         <!--data-setup='{}'-->
+         <!--style="width: 90vw;height: 60vw;left: 5vw">-->
+    <!--<source src="http://192.168.199.226:1935/live/myStream/wzh/playlist.m3u8" type="application/x-mpegURL">-->
+  <!--</video>-->
+  <!--<script>-->
+    <!--var options = {-->
+      <!--width: 940,-->
+      <!--height: 360-->
+    <!--}-->
+    <!--var player = videojs('live-stream', options);-->
+
+    <!--player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function(e) {-->
+      <!--console.warn('VIDEOJS player event: ',  e.type);-->
+    <!--});-->
+  <!--</script>-->
+
+  <!--<div id="playerjxJRqLMFuJaA_wrapper" style="position: relative; display: block; width: 100%; height: 490px;">-->
+    <!--<a id="beforeswfanchor0" href="#playerjxJRqLMFuJaA" tabindex="0" title="Flash start" style="border:0;clip:rect(0 0 0 0);display:block;height:1px;margin:-1px;outline:none;overflow:hidden;padding:0;position:absolute;width:1px;" data-related-swf="playerjxJRqLMFuJaA"></a>-->
+
+    <!--<object type="application/x-shockwave-flash" data="http://p.jwpcdn.com/6/12/jwplayer.flash.swf" width="100%" height="100%" bgcolor="#000000" id="playerjxJRqLMFuJaA" name="playerjxJRqLMFuJaA" class="jwswf swfPrev-beforeswfanchor0 swfNext-afterswfanchor0" tabindex="0">-->
+      <!--<param name="allowfullscreen" value="true">-->
+      <!--<param name="allowscriptaccess" value="always">-->
+      <!--<param name="seamlesstabbing" value="true">-->
+      <!--<param name="wmode" value="opaque">-->
+    <!--</object>-->
+
+    <!--<a id="afterswfanchor0" href="#playerjxJRqLMFuJaA" tabindex="0" title="Flash end" style="border:0;clip:rect(0 0 0 0);display:block;height:1px;margin:-1px;outline:none;overflow:hidden;padding:0;position:absolute;width:1px;" data-related-swf="playerjxJRqLMFuJaA"></a>-->
+
+    <!--<div id="playerjxJRqLMFuJaA_aspect" style="display: none;">-->
+    <!--</div>-->
+
+    <!--<div id="playerjxJRqLMFuJaA_jwpsrv" style="position: absolute; top: 0px; z-index: 10;">-->
+      <!--<div class="afs_ads" style="width: 1px; height: 1px; position: absolute; background: transparent;">&nbsp;-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<script data-cfasync="false" src="http://jwpsrv.com/library/SakQCEfSEeOHhRIxOQfUww.js"></script>-->
+    <!--<script data-cfasync="false" type="text/javascript">-->
+      <!--jwplayer('playerjxJRqLMFuJaA').setup({-->
+        <!--file: 'http://192.168.199.226:1935/live/myStream/wzh/playlist.m3u8',-->
+        <!--aboutlink: 'http://skysports.com',-->
+        <!--controls: 'true',-->
+        <!--title: 'Football Live Streamings.Com',-->
+        <!--width: '100%',-->
+        <!--height: '490',-->
+        <!--stretching: 'uniform',-->
+        <!--autostart: 'true',-->
+        <!--primary: 'flash',-->
+        <!--skin: 'vapor',-->
+        <!--androidhls: 'true',-->
+      <!--});-->
+    <!--</script>-->
+  <!--</div>-->
+
 </ion-content>

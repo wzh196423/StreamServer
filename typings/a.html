@@ -1,0 +1,104 @@
+
+<html>
+<head>
+  <title> Stream Player </title>
+  <link href="https://vjs.zencdn.net/5.19/video-js.css" rel="stylesheet">
+  <script src="https://vjs.zencdn.net/5.19/video.js"></script>
+  <!--<script>videojs.options.flash.swf = "video-js.swf";</script>-->
+</head>
+<body>
+<video
+  id="livestream"
+  class="video-js vjs-default-skin vjs-big-play-centered"
+  controls
+  autoplay
+  preload="auto"
+  data-setup=''
+  style="width: 400px;height: 300px">
+  <source src="rtmp://192.168.199.226:1935/live/myStream/wzh" type="rtmp/flv">
+</video>
+
+<!--<div class="video">-->
+  <!--<video id="ipcStreamVideo" controls="controls" autoplay="true" x-webkit-airplay="allow" webkit-playsinline>-->
+    <!--&lt;!&ndash; <source id="rtmpStreamSource" type="video/mp4"></source> &ndash;&gt;-->
+    <!--<source src="rtmp://192.168.199.226:1935/live/myStream/wzh" type="application/vnd.apple.mpegurl"/>-->
+  <!--</video>-->
+<!--</div>-->
+</body>
+</html>
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+  <!--<title>Video.js | HTML5 Video Player</title>-->
+
+<!--</head>-->
+<!--<body>-->
+  <!--<video id="live-stream" class="video-js vjs-default-skin vjs-big-play-centered"-->
+         <!--controls autoplay preload="auto" width="1080" height="520"-->
+         <!--data-setup='{"example_option":true}'>-->
+    <!--<source src="http://192.168.199.226:1935/live/myStream/wzh/playlist.m3u8" type="application/x-mpegURL">-->
+  <!--</video>-->
+  <!--<script src="https://vjs.zencdn.net/5.19/video.js"></script>-->
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.js">-->
+  <!--</script>-->
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.min.js"></script>-->
+<!--<script>-->
+  <!--var options = {-->
+    <!--width: 940,-->
+    <!--height: 360-->
+  <!--}-->
+  <!--var player = videojs('live-stream', options);-->
+
+  <!--player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function(e) {-->
+    <!--console.warn('VIDEOJS player event: ',  e.type);-->
+  <!--});-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+<!--<html>-->
+<!--<head>-->
+  <!--<style>*{margin:0;padding:0;}</style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="playerjxJRqLMFuJaA_wrapper" style="position: relative; display: block; width: 100%; height: 490px;">-->
+  <!--<a id="beforeswfanchor0" href="#playerjxJRqLMFuJaA" tabindex="0" title="Flash start" style="border:0;clip:rect(0 0 0 0);display:block;height:1px;margin:-1px;outline:none;overflow:hidden;padding:0;position:absolute;width:1px;" data-related-swf="playerjxJRqLMFuJaA"></a>-->
+
+  <!--<object type="application/x-shockwave-flash" data="http://p.jwpcdn.com/6/12/jwplayer.flash.swf" width="100%" height="100%" bgcolor="#000000" id="playerjxJRqLMFuJaA" name="playerjxJRqLMFuJaA" class="jwswf swfPrev-beforeswfanchor0 swfNext-afterswfanchor0" tabindex="0">-->
+    <!--<param name="allowfullscreen" value="true">-->
+    <!--<param name="allowscriptaccess" value="always">-->
+    <!--<param name="seamlesstabbing" value="true">-->
+    <!--<param name="wmode" value="opaque">-->
+  <!--</object>-->
+
+  <!--<a id="afterswfanchor0" href="#playerjxJRqLMFuJaA" tabindex="0" title="Flash end" style="border:0;clip:rect(0 0 0 0);display:block;height:1px;margin:-1px;outline:none;overflow:hidden;padding:0;position:absolute;width:1px;" data-related-swf="playerjxJRqLMFuJaA"></a>-->
+
+  <!--<div id="playerjxJRqLMFuJaA_aspect" style="display: none;">-->
+  <!--</div>-->
+
+  <!--<div id="playerjxJRqLMFuJaA_jwpsrv" style="position: absolute; top: 0px; z-index: 10;">-->
+    <!--<div class="afs_ads" style="width: 1px; height: 1px; position: absolute; background: transparent;">&nbsp;-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<script data-cfasync="false" src="http://jwpsrv.com/library/SakQCEfSEeOHhRIxOQfUww.js"></script>-->
+  <!--<script data-cfasync="false" type="text/javascript">-->
+    <!--jwplayer('playerjxJRqLMFuJaA').setup({-->
+      <!--file: 'http://192.168.199.226:1935/live/myStream/wzh/playlist.m3u8',-->
+      <!--aboutlink: 'http://skysports.com',-->
+      <!--controls: 'true',-->
+      <!--title: 'Football Live Streamings.Com',-->
+      <!--width: '100%',-->
+      <!--height: '490',-->
+      <!--stretching: 'uniform',-->
+      <!--autostart: 'true',-->
+      <!--primary: 'flash',-->
+      <!--skin: 'vapor',-->
+      <!--androidhls: 'true',-->
+    <!--});-->
+  <!--</script>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+

@@ -7,6 +7,11 @@ import {CampusService} from "../../../service/campus.service";
 import {CameraService} from "../../../service/camera.service";
 import {Camera} from "../../../entities/camera";
 import {CameraAddPage} from "./camera-add.component";
+import {School} from "../../../entities/school";
+import {SchoolService} from "../../../service/school.service";
+import {DirectStreamService} from "../../../service/directStream.service";
+import {DirectStream} from "../../../entities/directStream";
+import {CameraDetailPage} from "./camera-detail.component";
 /**
  * Created by wangziheng on 2018/3/24.
  */
@@ -16,20 +21,28 @@ import {CameraAddPage} from "./camera-add.component";
 })
 
 export class CameraManagePage{
+  schoolList: School[];
   campusList : Campus[];
   roomList : Room[];
   campusId : number;
   cameraList : Camera[];
   roomListByCampus: Room[];
+  directStreamList: DirectStream[];
   constructor(public appCtrl : App ,
               public navCtrl : NavController,
+              public schoolService: SchoolService,
               public roomService : RoomService,
               public campusService : CampusService,
-              public cameraService : CameraService,){
+              public cameraService : CameraService,
+              public directStreamService: DirectStreamService,
+              public alertCtrl: AlertController,
+              public toastCtrl: ToastController){
+    this.schoolList = schoolService.getSchoolList();
+    this.campusList = campusService.getCampusList();
     this.roomList = roomService.getRoomList();
     this.roomListByCampus = this.roomList;
-    this.campusList = campusService.getCampusList();
     this.cameraList = cameraService.getCameraList();
+    this.directStreamList = directStreamService.getDirectStreamList();
   }
 
   getCameraByCampus(c:Campus){
@@ -45,6 +58,18 @@ export class CameraManagePage{
     return result;
   }
 
+  showStreamUrl(camera:Camera){
+    if (camera.directStreamId == null || camera.directStreamId == undefined)
+      return '';
+    else {
+      let temp:DirectStream = this.directStreamService.getDirectStreamById(camera.directStreamId);
+      if (temp == undefined)
+        return '';
+      else
+        return temp.url;
+    }
+  }
+
   getRoomNameByRoomId(id:number){
     for(let room of this.roomList){
       if(room.id == id)
@@ -53,113 +78,98 @@ export class CameraManagePage{
     return '';
   }
 
-  // getRoomsByCampusId(campusId : number){
-  //   let result:Room[] = [];
-  //   for(let r of this.roomList){
-  //     if (r.campusId == campusId){
-  //       result.push(r);
-  //     }
-  //   }
-  //   return result;
-  //
-  // }
-  // updateRoomByCampus(){
-  //   this.roomListByCampus = this.getRoomsByCampusId(this.campusId);
-  // }
-
   ionViewDidEnter(){
     this.roomService.updateRoomList().then( rooms =>{
       this.roomList = rooms;
       this.roomListByCampus = this.roomList;
-    })
+    });
     this.cameraService.updateCameraList().then(cameras => {
       this.cameraList = cameras;
-    })
+    });
     this.campusService.updateCampusList().then( campuses => {
       this.campusList = campuses;
-    })
+    });
+    this.schoolService.updateSchoolList().then(schools => {
+      this.schoolList = schools;
+    });
+    this.directStreamService.updateDirectStreamList().then(streams => {
+      this.directStreamList = streams;
+    });
+    this.directStreamService.registerPage(this);
+    this.schoolService.registerPage(this);
     this.cameraService.registerPage(this);
     this.roomService.registerPage(this);
     this.campusService.registerPage(this);
   }
 
   ionViewDidLeave(){
+    this.schoolService.removePage(this);
     this.cameraService.removePage(this);
     this.roomService.removePage(this);
     this.campusService.removePage(this);
+    this.directStreamService.removePage(this);
   }
 
   update(){
     this.cameraService.updateCameraList().then(cameras =>{
       this.cameraList = cameras;
-    })
+    });
   }
 
   addCamera(){
-    this.navCtrl.push(CameraAddPage);
+    this.appCtrl.getRootNavs()[0].push(CameraAddPage);
   }
 
-  // onSubmit(){
-  //   if (this.serialNumber === ''){
-  //     let alert = this.alertCtrl.create({
-  //       title: '注册摄像头失败',
-  //       subTitle: '序列号不能为空，请重新输入',
-  //       buttons: ['确定']
-  //     });
-  //     alert.present();
-  //   } else if (this.brand === ''){
-  //     let alert = this.alertCtrl.create({
-  //       title: '注册摄像头失败',
-  //       subTitle: '摄像头品牌不能为空，请重新输入',
-  //       buttons: ['确定']
-  //     });
-  //     alert.present();
-  //   } else if (this.model === '') {
-  //     let alert = this.alertCtrl.create({
-  //       title: '注册摄像头失败',
-  //       subTitle: '摄像头型号不能为空，请重新输入',
-  //       buttons: ['确定']
-  //     });
-  //     alert.present();
-  //   } else if (this.ip === '') {
-  //     let alert = this.alertCtrl.create({
-  //       title: '注册摄像头失败',
-  //       subTitle: '摄像头ip地址不能为空，请重新输入',
-  //       buttons: ['确定']
-  //     });
-  //     alert.present();
-  //   } else {
-  //     let loading = this.loadingCtrl.create({
-  //       content: "注册中，请稍等",
-  //       duration : 2000
-  //     });
-  //     loading.present();
-  //     var toast = null;
-  //     let temp = new Camera(this.brand,this.model,this.serialNumber,this.ip,new Date(),false,this.roomId,'',this.cameraList.length+1);
-  //     this.cameraService.addCamera(temp).then((data) =>{
-  //       if (data === 'success'){
-  //         toast = this.toastCtrl.create({
-  //           message:"摄像头注册成功,serialNum :" +this.serialNumber + ",ip :" + this.ip + ", campus :" + this.campusId + ", room :" +this.roomId,
-  //           duration:2000,
-  //           position:'middle',
-  //         });
-  //         toast.onDidDismiss(() => {
-  //           this.appCtrl.navPop();
-  //           this.appCtrl.getRootNav().push(CameraManagePage)
-  //         });
-  //         loading.dismiss();
-  //         toast.present();
-  //       }else{
-  //         let alert = this.alertCtrl.create({
-  //           title: '注册失败',
-  //           subTitle: '摄像头已被注册或服务器错误，请重试',
-  //           buttons: ['确定']
-  //         });
-  //         loading.dismiss();
-  //         alert.present();
-  //       }
-  //     })
-  //   }
-  // }
+  showDetail(camera:Camera,campus:Campus,school:School){
+    this.appCtrl.getRootNavs()[0].push(CameraDetailPage,{
+      camera:camera,
+      campusName:campus.name,
+      schoolName:school.name,
+      roomName:this.roomList.find(item => {
+        return item.id == camera.roomId;
+      }).name,
+      streamUrl:this.showStreamUrl(camera)
+    })
+  }
+
+  deleteCamera(camera:Camera){
+    let alert = this.alertCtrl.create({
+      title: '删除确认',
+      message: '确定要删除序列号为"'+camera.serialNumber+'"的摄像头?',
+      buttons: [
+        {
+          text: '取消',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: '删除',
+          handler: () => {
+            console.log('delete clicked');
+            this.cameraService.deleteCamera(camera).then( (data) => {
+              if (data == 'success'){
+                let toast = this.toastCtrl.create({
+                  message:"删除成功",
+                  duration:2000,
+                  position:'middle',
+                });
+                toast.present();
+              }else{
+                alert = this.alertCtrl.create({
+                  title: '删除失败',
+                  subTitle: '服务器错误，请重试',
+                  buttons: ['确定']
+                });
+                alert.present();
+              }
+            })
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
 }
 

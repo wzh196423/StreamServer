@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{school.name+campus.name+room.name}}详情页
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-group ion-item no-padding>
+      <ion-item-divider no-margin color="light">
+        <b>camera</b>
+        <!--<button ion-button outline item-end (click)="registerServer(1)">-->
+          <!--<ion-icon name="add"></ion-icon>-->
+          <!--添加rootServer-->
+        <!--</button>-->
+      </ion-item-divider>
+      <ion-item-sliding *ngFor="let camera of cameraList" [hidden]="camera.roomId != room.id">
+        <button ion-item block (click)="showDetail(camera)">
+          <h2>brand : {{camera.brand}}</h2>
+          <h2>model : {{camera.model}}</h2>
+          <h2>serialNumber : {{camera.serialNumber}}</h2>
+          <h2>ip : {{camera.ip}}</h2>
+          <h2>room : {{school.name+campus.name+room.name}}</h2>
+          <h2>registerTime: {{camera.registerTime}}</h2>
+          <h2>streamUrl : {{showStreamUrl(camera)}}</h2>
+          <h2>status: {{camera.status?'打开':'关闭'}}</h2>
+        </button>
+        <!--<ion-item-options>-->
+          <!--<button ion-button color="danger"  (click)="deleteRootServer(rootServer)"><ion-icon name="trash"></ion-icon> Delete</button>-->
+        <!--</ion-item-options>-->
+      </ion-item-sliding>
+
+
+      <ion-item-divider no-margin color="light">
+        <b>server</b>
+        <!--<button ion-button outline item-end (click)="registerServer(2)">-->
+          <!--<ion-icon name="add"></ion-icon>-->
+          <!--添加liveServer-->
+        <!--</button>-->
+      </ion-item-divider>
+      <ion-item-sliding *ngFor="let server of serverList" [hidden]="server.roomId != room.id">
+        <button ion-item block (click)="gotoServerInfo(server)">
+          <h2>brand : {{server.brand}}</h2>
+          <h2>registerTime : {{server.registerTime}}</h2>
+          <h2>storage : {{server.storage}} GB</h2>
+          <h2>usedStorage : {{server.usedStorage}} GB ({{(server.usedStorage/server.storage*100).toFixed(1)}}%)</h2>
+          <h2>cores : {{server.cores}} cores</h2>
+          <h2>memory : {{server.memory}} GB</h2>
+          <h2>room : {{school.name+campus.name+room.name}}</h2>
+          <h2>description : {{server.description}}</h2>
+        </button>
+        <!--<ion-item-options>-->
+          <!--<button ion-button color="danger"  (click)="deleteLiveServer(liveServer)"><ion-icon name="trash"></ion-icon> Delete</button>-->
+        <!--</ion-item-options>-->
+      </ion-item-sliding>
+
+
+    </ion-item-group>
+  </ion-list>
+
+</ion-content>

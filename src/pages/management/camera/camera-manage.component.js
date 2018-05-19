@@ -95,7 +95,7 @@ var CameraDetailPage = /** @class */ (function () {
             this.cameraService.addCamera(temp).then(function (data) {
                 if (data !== 'success') {
                     toast = _this.toastCtrl.create({
-                        message: "摄像头注册成功,serialNum :" + _this.serialNumber + ",ip :" + _this.ip + ", campus :" + _this.campusId + ", room :" + _this.roomId,
+                        message: "摄像头注册成功,serialNum :" + _this.serialNumber + ",ip :" + _this.ip + ", campus :" + _this.campusId + ", location :" + _this.roomId,
                         duration: 2000,
                         position: 'middle',
                     });

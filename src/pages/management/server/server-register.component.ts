@@ -79,7 +79,7 @@ export class ServerRegisterPage{
       var toast = null;
       let temp = null;
       if (this.type == 1) {
-        temp = new RootServer(this.port, this.server.id, 2);
+        temp = new RootServer(this.port, this.server.id);
         this.rootServerService.addRootServer(temp).then((data) =>{
           if (data === 'success'){
             toast = this.toastCtrl.create({
@@ -104,7 +104,7 @@ export class ServerRegisterPage{
         })
       }
       else {
-        temp = new LiveServer(this.port, this.maxStream, this.server.id, 1);
+        temp = new LiveServer(this.port, this.maxStream, this.server.id, this.rootServerId);
         this.liveServerService.addLiveServer(temp).then((data) =>{
           if (data === 'success'){
             toast = this.toastCtrl.create({

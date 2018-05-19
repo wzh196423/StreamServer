@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      添加教室
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onSubmit()" #registerFrom="ngForm">
+    <ion-item>
+      <ion-label>学校</ion-label>
+      <ion-select interface="popover" [(ngModel)]="schoolId" [ngModelOptions]="{standalone: true}" (ionChange)="updateCampusBySchool()" placeholder="--请选择学校--">
+        <ion-option *ngFor="let s of schoolList" value="{{s.id}}">
+          {{s.name}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>校区</ion-label>
+      <ion-select interface="popover" [(ngModel)]="campusId" [ngModelOptions]="{standalone: true}" placeholder="--请选择校区--">
+        <ion-option *ngFor="let c of campusListBySchool" value="{{c.id}}">
+          {{c.name}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>教室</ion-label>
+      <ion-input type="text" name="name" [(ngModel)]="name" required [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+
+
+    <div padding>
+      <button type="submit" ion-button color="primary" block [disabled]="!registerFrom.form.valid">添加教室</button>
+    </div>
+
+
+  </form>
+</ion-content>

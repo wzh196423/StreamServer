@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{ip}}直推流管理
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addDirectStream()">
+        <ion-icon name="add"></ion-icon>添加
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-group ion-item no-padding>
+      <ion-item-sliding *ngFor="let directStream of directStreamList">
+        <button ion-item (click)="showDetail(directStream)">
+          <h2>url : {{directStream.url}}</h2>
+          <h2>liveServer : {{server.ip}}:{{liveServer.port}}</h2>
+          <h2>status: {{directStream.status?'打开':'关闭'}}</h2>
+          <h2>liveRoom: {{getTitle(directStream)}}</h2>
+        </button>
+        <ion-item-options>
+          <button ion-button color="danger"  (click)="deleteDirectStream(directStream)"><ion-icon name="trash"></ion-icon> Delete</button>
+        </ion-item-options>
+      </ion-item-sliding>
+
+    </ion-item-group>
+  </ion-list>
+
+</ion-content>

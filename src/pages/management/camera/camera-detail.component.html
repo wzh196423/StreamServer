@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      摄像头详情
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <h6>brand : {{camera.brand}}</h6>
+  <h6>model : {{camera.model}}</h6>
+  <h6>serialNumber : {{camera.serialNumber}}</h6>
+  <h6>ip : {{camera.ip}}</h6>
+  <h6>room : {{schoolName+campusName+roomName}}</h6>
+  <h6>registerTime: {{camera.registerTime}}</h6>
+  <h6 style="word-break:break-all">streamUrl : {{streamUrl}}</h6>
+  <h6>status: {{camera.status?'打开':'关闭'}}</h6>
+
+  <form (ngSubmit)="onSubmit()" #registerFrom="ngForm" novalidate="novalidate">
+
+    <ion-item>
+      <ion-label>new status: {{newStatus?'打开':'关闭'}}</ion-label>
+      <!--<ion-label [hidden]="camera.directStreamId!=undefined">未绑定直播流，无法操作开关</ion-label>-->
+      <ion-toggle [(ngModel)]="newStatus" [ngModelOptions]="{standalone: true}"></ion-toggle>
+      <!--<ion-toggle [(ngModel)]="newStatus" [ngModelOptions]="{standalone: true}" [disabled]="camera.directStreamId==undefined"></ion-toggle>-->
+    </ion-item>
+
+    <ion-item [hidden]="!camera.status">
+      <ion-label>关闭状态下才能修改推流地址</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-select [(ngModel)]="bindStreamId" [ngModelOptions]="{standalone: true}"
+                  placeholder="--请绑定直播流--" [disabled]="camera.status">
+        <ion-option value="{{-1}}" [selected]="camera.directStreamId==undefined">未绑定直播流</ion-option>
+        <ion-option *ngFor="let ds of directStreamList" value="{{ds.id}}" [selected]="ds.url == streamUrl">
+          {{ds.url}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+
+    <div padding>
+      <button type="submit" ion-button color="primary" block [disabled]="(newStatus == camera.status && (bindStreamId==undefined || bindStreamId == camera.directStreamId)) || (bindStreamId==-1 && camera.directStreamId==undefined)" ngForm="">保存</button>
+    </div>
+  </form>
+
+
+</ion-content>

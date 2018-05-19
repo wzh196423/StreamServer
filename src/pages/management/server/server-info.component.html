@@ -22,25 +22,37 @@
         <b>rootServer</b>
         <button ion-button outline item-end (click)="registerServer(1)">
           <ion-icon name="add"></ion-icon>
-          挂载rootServer
+          添加rootServer
         </button>
       </ion-item-divider>
-      <button ion-item block *ngFor="let rootServer of rootServerList">
-        <h2>port : {{rootServer.port}}</h2>
-      </button>
+      <ion-item-sliding *ngFor="let rootServer of rootServerList">
+        <button ion-item block>
+          <h2>port : {{rootServer.port}}</h2>
+        </button>
+        <ion-item-options>
+          <button ion-button color="danger"  (click)="deleteRootServer(rootServer)"><ion-icon name="trash"></ion-icon> Delete</button>
+        </ion-item-options>
+      </ion-item-sliding>
+
 
       <ion-item-divider no-margin color="light">
         <b>liveServer</b>
         <button ion-button outline item-end (click)="registerServer(2)">
           <ion-icon name="add"></ion-icon>
-          挂载liveServer
+          添加liveServer
         </button>
       </ion-item-divider>
-      <button ion-item block *ngFor="let liveServer of liveServerList" outline>
-        <h2>port : {{liveServer.port}}</h2>
-        <h2>maxStream : {{liveServer.maxStream}}</h2>
-        <h2>rootServer : {{getRootServerIpById(liveServer.rootServerId)}}</h2>
-      </button>
+      <ion-item-sliding *ngFor="let liveServer of liveServerList">
+        <button ion-item block outline (click)="gotoLiveServer(liveServer)">
+          <h2>port : {{liveServer.port}}</h2>
+          <h2>maxStream : {{liveServer.maxStream}}</h2>
+          <h2>rootServer : {{getRootServerIpById(liveServer.rootServerId)}}</h2>
+        </button>
+        <ion-item-options>
+          <button ion-button color="danger"  (click)="deleteLiveServer(liveServer)"><ion-icon name="trash"></ion-icon> Delete</button>
+        </ion-item-options>
+      </ion-item-sliding>
+
 
     </ion-item-group>
 
