@@ -5,6 +5,7 @@ import {LiveRoomService} from "../../service/liveRoom.service";
 import {Channel} from "../../entities/channel";
 import {LiveRoom} from "../../entities/liveRoom";
 import {LiveRoomDetailPage} from "../management/channel/live-room-detail.component";
+import videojs from 'video.js';
 
 @Component({
   selector: 'page-live-tab',
@@ -23,7 +24,8 @@ export class LiveTabPage {
     this.liveRoomList = this.liveRoomService.getLiveRoomList();
     this.channelList.forEach(item => {
       this.showAll.set(item.id,false);
-    })
+    });
+
   }
 
   checkAllLiveRooms(channel:Channel){
@@ -47,6 +49,8 @@ export class LiveTabPage {
     });
     this.channelService.registerPage(this);
     this.liveRoomService.registerPage(this);
+    // var player = videojs("p1");
+    // player.play();
   }
 
   ionViewDidLeave(){

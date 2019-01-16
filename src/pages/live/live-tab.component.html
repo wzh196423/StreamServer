@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <ion-header>
   <ion-navbar>
     <ion-title>
@@ -34,14 +35,48 @@
     </ion-item-group>
   </ion-list>
 
+  <!--<video-->
+    <!--id="livestream"-->
+    <!--class="video-js vjs-default-skin vjs-big-play-centered"-->
+    <!--controls-->
+    <!--data-setup=''-->
+    <!--style="width: 400px;height: 300px">-->
+    <!--<source src="http://10.222.248.184:1935/live/myStream/wzh/playlist.m3u8" type="application/x-mpegURL">-->
+  <!--</video>-->
+
+
+  <!--<video id="p1" width=600 height=300 class="video-js vjs-default-skin" controls>-->
+    <!--<source-->
+      <!--src="rtmp://192.168.1.106:1935/live/test"-->
+      <!--type="rtmp/flv">-->
+  <!--</video>-->
+
+
   <video
-    id="livestream"
-    class="video-js vjs-default-skin vjs-big-play-centered"
-    controls
-    data-setup=''
-    style="width: 400px;height: 300px">
-    <source src="http://192.168.199.226:1935/live/myStream/wzh/playlist.m3u8" type="application/x-mpegURL">
+  id="livestream"
+  class="video-js vjs-default-skin vjs-big-play-centered"
+  controls
+  autoplay
+  preload="auto"
+  data-setup=''
+  style="width: 800px;height: 600px">
+  <source src="rtmp://192.168.199.222:1935/live/aaa" type="rtmp/flv">
   </video>
+  <script>
+    var player = window.player = videojs('videojs-panorama-player', {}, function () {
+      var player = this;
+      var videoElement = document.getElementById("player_wrapper");
+      var width = videoElement.offsetWidth;
+      var height = videoElement.offsetHeight;
+      player.width(width), player.height(height);
+    });
+    player.panorama({
+      clickAndDrag: true,
+      callback: function () {
+        player.play();
+      }
+    });
+  </script>
 
 
 
@@ -53,10 +88,33 @@
     <!--autoplay-->
     <!--preload="auto"-->
     <!--data-setup=''-->
-    <!--style="width: 400px;height: 300px">-->
-    <!--<source src="rtmp://192.168.199.226:1935/live/myStream/wzh" type="rtmp/flv">-->
+    <!--style="width: 800px;height: 600px">-->
+    <!--<source src="rtmp://192.168.199.222:1935/live/aaa" type="rtmp/flv">-->
   <!--</video>-->
 
+  <!--<div id="player_wrapper" class="player_wrapper">-->
+    <!--<div class="player_container">-->
+      <!--<video id="videojs-panorama-player" class="video-js vjs-default-skin" crossorigin="anonymous" controls>-->
+        <!--<source src="rtmp://192.168.199.222:1935/live/aaa" type="rtmp/flv">-->
+      <!--</video>-->
+    <!--</div>-->
+  <!--</div>-->
+
+  <!--<script>-->
+    <!--var player = window.player = videojs('videojs-panorama-player', {}, function () {-->
+      <!--var player = this;-->
+      <!--var videoElement = document.getElementById("player_wrapper");-->
+      <!--var width = videoElement.offsetWidth;-->
+      <!--var height = videoElement.offsetHeight;-->
+      <!--player.width(width), player.height(height);-->
+    <!--});-->
+    <!--player.panorama({-->
+      <!--clickAndDrag: true,-->
+      <!--callback: function () {-->
+        <!--player.play();-->
+      <!--}-->
+    <!--});-->
+  <!--</script>-->
   <!--以下代码在浏览器中使用移动端模式也能加载，但是在手机模拟器上不能加载-->
   <!--<video id="live-stream" class="video-js vjs-default-skin vjs-big-play-centered"-->
          <!--controls preload="auto" width="1080" height="520"-->

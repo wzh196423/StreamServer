@@ -6,8 +6,7 @@ import {ChannelManagePage} from "./channel/channel-manage.component";
 import {ServerManagePage} from "./server/server-manage.component";
 import {SchoolManagePage} from "./location/school/school-manage.component";
 import {CampusManagePage} from "./location/campus/campus-manage.component";
-import * as video from '../../assets/js/videojs-contrib-hls';
-import * as video1 from '../../assets/js/videojs-contrib-hls.min';
+
 @Component({
   selector: 'page-management',
   templateUrl: 'management-tab.component.html'
@@ -40,8 +39,6 @@ export class ManagementTabPage {
     this.things.push('服务器管理');
     this.pages.push(ServerManagePage);
 
-    this.video = video;
-    this.video1 = video1;
   }
 
   showDetail(thing: string) {
